@@ -1,0 +1,222 @@
+-- CREATING DATABASE Ecommerce_Analytics
+CREATE DATABASE IF NOT EXISTS Ecommerce_Analytics;
+use Ecommerce_Analytics;
+-- Drop existing tables for safe re-execution
+DROP TABLE IF EXISTS Payments;
+DROP TABLE IF EXISTS Order_Items;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Products;
+DROP TABLE IF EXISTS Categories;
+DROP TABLE IF EXISTS Customers;
+
+# CREATING TABLES, Customers, Categories, Products, Orders, order_items and payments
+create table Customers(
+customer_id int auto_increment not null Primary Key,
+customer_name varchar(50), 
+email varchar(100),
+city varchar(50),
+country varchar(50),
+signup_date date);
+
+create table Categories(category_id int Primary Key, category_name varchar(50));
+
+create table Products(product_id int Primary Key, category_id int,
+product_name varchar(50), FOREIGN KEY (category_id) REFERENCES Categories(category_id),
+price int, stock int);
+
+create table Orders(order_id int Primary Key not null, 
+customer_id int, Foreign Key(customer_id) references Customers(customer_id),
+order_date date, order_status varchar(50), total_amount int);
+
+create table Order_Items(order_item_id int primary key not null, order_id int, Foreign Key(order_id) references orders(order_id), 
+product_id int, Foreign Key(product_id) references products(product_id),
+quantity int, price int); 
+
+create table Payments(payment_id int primary key, 
+order_id int, foreign key(order_id) references Orders(order_id), payment_method varchar(50),
+payment_date date, payment_status varchar(50));
+
+# INSERTING DATA INTO TABLES
+insert into Customers Values(1,'Rahul Sharma','rahul@gmail.com','Mumbai','India','2023-01-10'), 
+(2,'Priya Singh','priya@gmail.com','Delhi','India','2023-02-05'), 
+(3,'John Smith','john@gmail.com','New York','USA','2023-03-12'), 
+(4,'Amit Patel','amit@gmail.com','Ahmedabad','India','2023-05-20'), 
+(5,'Sneha Kapoor','sneha@gmail.com','Bangalore','India','2023-06-18'), 
+(6,'Arjun Mehta','arjun@gmail.com','Pune','India','2023-07-22'), 
+(7,'Emily Brown','emily@gmail.com','London','UK','2023-04-14'), 
+(8,'Michael Lee','michael@gmail.com','Singapore','Singapore','2023-08-10'), 
+(9,'Neha Joshi','neha@gmail.com','Nagpur','India','2023-09-01'), 
+(10,'David Miller','david@gmail.com','Chicago','USA','2023-10-12'), 
+(11,'Rohan Verma','rohan@gmail.com','Jaipur','India','2023-11-02'), 
+(12,'Ananya Iyer','ananya@gmail.com','Chennai','India','2023-11-20'), 
+(13,'Chris Evans','chris@gmail.com','Los Angeles','USA','2023-12-05'), 
+(14,'Sara Khan','sara@gmail.com','Hyderabad','India','2023-12-18'), 
+(15,'Vikram Singh','vikram@gmail.com','Lucknow','India','2024-01-10'),
+(16, 'Kavya Nair', 'kavya@gmail.com', 'Kochi', 'India', '2024-01-15'),
+(17, 'Manish Kumar', 'manish@gmail.com', 'Patna', 'India', '2024-01-20'),
+(18, 'Sophia Taylor', 'sophia@gmail.com', 'Sydney', 'Australia', '2024-02-01'),
+(19, 'Ravi Teja', 'ravi@gmail.com', 'Vizag', 'India', '2024-02-10'),
+(20, 'Pooja Das', 'pooja@gmail.com', 'Kolkata', 'India', '2024-02-18'),
+(21, 'Alex Turner', 'alex@gmail.com', 'Toronto', 'Canada', '2024-03-01'),
+(22, 'Simran Kaur', 'simran@gmail.com', 'Chandigarh', 'India', '2024-03-05'),
+(23, 'Deepak Rao', 'deepak@gmail.com', 'Indore', 'India', '2024-03-12'),
+(24, 'Emma Wilson', 'emma@gmail.com', 'London', 'UK', '2024-03-20'),
+(25, 'Siddharth Roy', 'siddharth@gmail.com', 'Kolkata', 'India', '2024-04-02'),
+(26, 'Meera Reddy', 'meera@gmail.com', 'Hyderabad', 'India', '2024-04-10'),
+(27, 'Daniel Craig', 'daniel@gmail.com', 'Manchester', 'UK', '2024-04-15'),
+(28, 'Tanvi Sharma', 'tanvi@gmail.com', 'Delhi', 'India', '2024-05-01'),
+(29, 'Yash Gupta', 'yash@gmail.com', 'Noida', 'India', '2024-05-12'),
+(30, 'Ishita Dutta', 'ishita@gmail.com', 'Guwahati', 'India', '2024-05-20');
+
+insert into categories Values(1,'Electronics'), 
+(2,'Clothing'), 
+(3,'Home Appliances'), 
+(4,'Sports'), 
+(5,'Books'), 
+(6,'Beauty'), 
+(7,'Toys'), 
+(8,'Furniture'), 
+(9,'Groceries'), 
+(10,'Accessories');
+
+insert into Products Values (101, 1, 'Laptop', 80000, 15),
+(102, 1, 'Smartphone', 40000, 45),
+(103, 2, 'T-Shirt', 800, 150),
+(104, 4, 'Running Shoes', 3500, 25),
+(105, 3, 'Microwave Oven', 12000, 10),
+(106, 8, 'Dining Table', 25000, 5),
+(107, 3, 'Refrigerator', 45000, 8),
+(108, 4, 'Cricket Bat', 2000, 60),
+(109, 5, 'Novel Book', 500, 200),
+(110, 6, 'Face Cream', 700, 120),
+(111, 7, 'Kids Toy Car', 1200, 80),
+(112, 8, 'Office Chair', 6000, 18),
+(113, 9, 'Rice Bag 10kg', 1200, 100),
+(114, 10, 'Wrist Watch', 5000, 40),
+(115, 1, 'Wireless Headphones', 2500, 90),
+(116, 2, 'Denim Jeans', 2200, 85),
+(117, 3, 'Air Conditioner', 38000, 6),
+(118, 5, 'Data Science Guide', 950, 110),
+(119, 6, 'Shampoo 500ml', 450, 160),
+(120, 10, 'Leather Wallet', 1500, 75); 
+
+insert into orders Values(1001,1,'2024-01-10','Delivered',80800), 
+(1002,2,'2023-06-12','Delivered',40000), 
+(1003,3,'2023-06-15','Cancelled',800), 
+(1004,1,'2023-06-18','Delivered',3500), 
+(1005,4,'2023-08-20','Delivered',45000), 
+(1006,5,'2023-08-22','Delivered',2000), 
+(1007,6,'2023-09-25','Pending',500), 
+(1008,7,'2023-11-26','Delivered',1200), 
+(1009,8,'2023-11-28','Delivered',6000), 
+(1010,9,'2023-12-31','Delivered',25000), 
+(1011,10,'2024-01-03','Delivered',1200), 
+(1012,11,'2024-01-05','Cancelled',700), 
+(1013,12,'2024-01-08','Delivered',5000), 
+(1014,13,'2024-02-10','Delivered',2500), 
+(1015,14,'2024-02-12','Pending',1200),
+(1016, 15, '2024-02-18', 'Delivered', 42200),
+(1017, 16, '2024-02-25', 'Delivered', 3500),
+(1018, 17, '2024-03-02', 'Delivered', 12000),
+(1019, 18, '2024-03-08', 'Delivered', 38000),
+(1020, 19, '2024-03-14', 'Returned', 2200),
+(1021, 20, '2024-04-22', 'Delivered', 7500),
+(1022, 2, '2024-04-28', 'Delivered', 1500),
+(1023, 21, '2024-04-03', 'Delivered', 82500),
+(1024, 22, '2024-04-09', 'Delivered', 450),
+(1025, 23, '2024-04-15', 'Delivered', 6000),
+(1026, 24, '2024-05-20', 'Cancelled', 25000),
+(1027, 25, '2024-05-27', 'Delivered', 3700),
+(1028, 26, '2024-05-02', 'Delivered', 40000),
+(1029, 27, '2024-05-08', 'Delivered', 2950),
+(1030, 28, '2024-05-15', 'Delivered', 12000),
+(1031, 29, '2024-05-22', 'Pending', 1500),
+(1032, 30, '2024-05-29', 'Delivered', 45000),
+(1033, 1, '2024-06-03', 'Delivered', 5000),
+(1034, 5, '2024-06-10', 'Delivered', 3500),
+(1035, 12, '2024-06-18', 'Delivered', 800); 
+
+insert into Order_Items Values(1, 1001, 101, 1, 80000),
+(2, 1001, 103, 1, 800),
+(3, 1002, 102, 1, 40000),
+(4, 1003, 103, 1, 800),
+(5, 1004, 104, 1, 3500),
+(6, 1005, 107, 1, 45000),
+(7, 1006, 108, 1, 2000),
+(8, 1006, 110, 1, 700),
+(9, 1007, 109, 1, 500),
+(10, 1008, 111, 1, 1200),
+(11, 1009, 112, 1, 6000),
+(12, 1010, 106, 1, 25000),
+(13, 1011, 113, 1, 1200),
+(14, 1012, 110, 1, 700),
+(15, 1013, 114, 1, 5000),
+(16, 1014, 115, 1, 2500),
+(17, 1015, 113, 1, 1200),
+(18, 1016, 102, 1, 40000),
+(19, 1016, 116, 1, 2200),
+(20, 1017, 104, 1, 3500),
+(21, 1018, 105, 1, 12000),
+(22, 1019, 117, 1, 38000),
+(23, 1020, 116, 1, 2200),
+(24, 1021, 114, 1, 5000),
+(25, 1021, 115, 1, 2500),
+(26, 1022, 120, 1, 1500),
+(27, 1023, 101, 1, 80000),
+(28, 1023, 115, 1, 2500),
+(29, 1024, 119, 1, 450),
+(30, 1025, 112, 1, 6000),
+(31, 1026, 106, 1, 25000),
+(32, 1027, 116, 1, 2200),
+(33, 1027, 120, 1, 1500),
+(34, 1028, 102, 1, 40000),
+(35, 1029, 118, 1, 950),
+(36, 1029, 108, 1, 2000),
+(37, 1030, 105, 1, 12000),
+(38, 1031, 120, 1, 1500),
+(39, 1032, 107, 1, 45000),
+(40, 1033, 114, 1, 5000),
+(41, 1034, 104, 1, 3500),
+(42, 1035, 103, 1, 800); 
+
+insert into Payments Values(1, 1001, 'Credit Card', '2024-01-10', 'Success'),
+(2, 1002, 'UPI', '2024-01-12', 'Success'),
+(3, 1003, 'Debit Card', '2024-01-15', 'Refunded'),
+(4, 1004, 'UPI', '2024-01-18', 'Success'),
+(5, 1005, 'Credit Card', '2024-01-20', 'Success'),
+(6, 1006, 'Net Banking', '2024-01-22', 'Success'),
+(7, 1007, 'COD', '2024-01-25', 'Pending'),
+(8, 1008, 'Debit Card', '2024-01-26', 'Success'),
+(9, 1009, 'UPI', '2024-01-28', 'Success'),
+(10, 1010, 'Credit Card', '2024-02-01', 'Success'),
+(11, 1011, 'UPI', '2024-02-03', 'Success'),
+(12, 1012, 'Debit Card', '2024-02-05', 'Refunded'),
+(13, 1013, 'UPI', '2024-02-08', 'Success'),
+(14, 1014, 'Credit Card', '2024-02-10', 'Success'),
+(15, 1015, 'COD', '2024-02-12', 'Pending'),
+(16, 1016, 'Credit Card', '2024-02-18', 'Success'),
+(17, 1017, 'UPI', '2024-02-25', 'Success'),
+(18, 1018, 'Net Banking', '2024-03-02', 'Success'),
+(19, 1019, 'Credit Card', '2024-03-08', 'Success'),
+(20, 1020, 'UPI', '2024-03-14', 'Refunded'),
+(21, 1021, 'Credit Card', '2024-03-22', 'Success'),
+(22, 1022, 'UPI', '2024-03-28', 'Success'),
+(23, 1023, 'Credit Card', '2024-04-03', 'Success'),
+(24, 1024, 'UPI', '2024-04-09', 'Success'),
+(25, 1025, 'Net Banking', '2024-04-15', 'Success'),
+(26, 1026, 'Credit Card', '2024-04-20', 'Failed'),
+(27, 1027, 'UPI', '2024-04-27', 'Success'),
+(28, 1028, 'Credit Card', '2024-05-02', 'Success'),
+(29, 1029, 'Debit Card', '2024-05-08', 'Success'),
+(30, 1030, 'UPI', '2024-05-15', 'Success'),
+(31, 1031, 'COD', '2024-05-22', 'Pending'),
+(32, 1032, 'Credit Card', '2024-05-29', 'Success'),
+(33, 1033, 'UPI', '2024-06-03', 'Success'),
+(34, 1034, 'Credit Card', '2024-06-10', 'Success'),
+(35, 1035, 'UPI', '2024-06-18', 'Success'); 
+select * from customers;
+select * from products;
+select * from orders;
+select * from payments;
+select * from categories;
+select * from order_items;
